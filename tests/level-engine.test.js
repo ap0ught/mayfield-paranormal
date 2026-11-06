@@ -28,9 +28,9 @@ for (const level of Object.values(LEVELS)) {
     const a=initializeLevel(level,()=>0), b=initializeLevel(level,()=>0);
     assert.equal(a.selected,level.defaultSelected);
     assert.deepEqual(a.cameras,level.defaultCameras);
-    assert.equal(a.cameras.length,4);
+    assert.equal(a.cameras.length,(level.cameraRows ?? 2)*(level.cameraColumns ?? 2));
     assert.equal(a.focus.length,STARTING_FOCUS);
-    assert.equal(a.trapCount,2);
+    assert.equal(a.trapCount,level.toolItems.find(item=>item.name==='Ghost Trap')?.count);
     assert.equal(a.actors.length,level.initialActors.length+level.randomAnimals.length);
     assert.ok(a.actors.every(isResident));
     assert.notStrictEqual(a.actors,b.actors);
@@ -64,20 +64,22 @@ for (const level of Object.values(LEVELS)) {
     assert.deepEqual(arriving.map(a=>a.groupId),Array(arriving.length).fill(first.id));
     let actors=arriving;
     const originalIds=arriving.map(a=>a.id);
-    for(let i=0;i<180;i++) actors=moveActors(actors);
+    for(let i=0;i<350;i++) actors=moveActors(actors);
     assert.equal(actors.length,0,'guests should exit when their planned visit ends');
     assert.ok(!originalIds.some(id=>actors.some(a=>a.id===id)));
     assert.equal(guestsDueAtTick(level,first.startTick+first.repeatEvery,[]).length,arriving.length);
   });
 
-  test(`${level.id}: scheduled guests are human, animal and ghost actors`, () => {
+  test(`${level.id}: scheduled guests use supported actor kinds`, () => {
     const guestWorld=initializeLevel(level,()=>0.99);
     const visitorKinds=new Set(guestWorld.guestVisits.flatMap(visit=>visit.members.map(member=>member.kind)));
-    assert.deepEqual([...visitorKinds].sort(),['animal','ghost','human']);
+    const expectedVisitorKinds = level.id==='bank' ? ['ghost','human'] : level.id==='hotel' ? ['human'] : ['animal','ghost','human'];
+    assert.deepEqual([...visitorKinds].sort(),expectedVisitorKinds);
     const residentKinds=new Set(initializeLevel(level,()=>0).actors.map(actor=>actor.kind));
-    assert.deepEqual([...residentKinds].sort(),['animal','ghost','human']);
+    const expectedResidentKinds = level.id==='house'||level.id==='park' ? ['animal','ghost','human'] : ['ghost','human'];
+    assert.deepEqual([...residentKinds].sort(),expectedResidentKinds);
     assert.ok(level.initialActors.some(isGhost));
-    assert.ok(level.guestVisits.some(v=>v.members.some(isGhost)));
+    if(level.id!=='hotel') assert.ok(level.guestVisits.some(v=>v.members.some(isGhost)));
   });
 }
 
@@ -159,7 +161,7 @@ test('validation catches illegal guest route skips',()=>{
 
 for (const level of Object.values(LEVELS)) {
   test(`${level.id}: randomized animal can be either a resident or a guest at load`, () => {
-    assert.ok(level.randomAnimals.some(animal=>animal.role==='cat'), 'every level must include a randomized cat');
+    if (['house','park'].includes(level.id)) assert.ok(level.randomAnimals.some(animal=>animal.role==='cat'), 'house and park must include a randomized cat');
     const residentWorld=initializeLevel(level,()=>0);
     const guestWorld=initializeLevel(level,()=>0.99);
     for (const animal of level.randomAnimals) {

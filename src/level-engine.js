@@ -4,7 +4,7 @@ export const MAX_FOCUS = 24;
 export const STARTING_FOCUS = 16;
 export const ACTOR_KINDS = ['human', 'animal', 'ghost'];
 export const STAY_TYPES = ['resident', 'guest'];
-export const OBJECTIVE_EVENTS = ['inspect', 'listen_story', 'audio_recorded', 'emf_scan_ghost', 'capture_ghost'];
+export const OBJECTIVE_EVENTS = ['inspect', 'listen_story', 'audio_recorded', 'emf_scan_ghost', 'capture_ghost', 'thief_reported', 'item_recovered', 'item_returned'];
 export const GAME_STATES = ['playing', 'won', 'lost'];
 
 export function isResident(actor) { return actor.stay === 'resident'; }
@@ -36,7 +36,10 @@ export function validateLevel(level) {
   if (roomIds.size!==rooms.length) errors.push('Duplicate zone IDs');
   if (roomIds.size<1) errors.push('At least one zone required');
   if (!roomIds.has(level.defaultSelected)) errors.push('Selected zone missing');
-  if (level.defaultCameras?.length!==4) errors.push('Expected four Detail 2 cameras');
+  const cameraRows = level.cameraRows ?? 2;
+  const cameraColumns = level.cameraColumns ?? 2;
+  if (!Number.isInteger(cameraRows) || cameraRows<1 || !Number.isInteger(cameraColumns) || cameraColumns<1) errors.push('Invalid camera grid dimensions');
+  if (level.defaultCameras?.length!==cameraRows*cameraColumns) errors.push(`Expected ${cameraRows*cameraColumns} Detail 2 cameras`);
   for (const id of level.defaultCameras ?? []) if (!roomIds.has(id)) errors.push(`Camera references unknown zone ${id}`);
   for (const cell of level.mapCells ?? []) if (typeof cell==='string' && !roomIds.has(cell)) errors.push(`Map references unknown zone ${cell}`);
   for (const room of rooms) {
@@ -86,8 +89,31 @@ export function validateLevel(level) {
   }
   for (const story of level.storyEvents ?? []) if (!roomIds.has(story.room)) errors.push(`Story in unknown zone ${story.room}`);
   for (const log of level.startLogEntries ?? []) if (!roomIds.has(log.room)) errors.push(`Sound in unknown zone ${log.room}`);
-  if (level.mapCells?.length!==9) errors.push('Expected 3×3 map layout');
-  for (const id of roomIds) if (!(level.mapCells ?? []).includes(id)) errors.push(`Zone ${id} omitted from map`);
+  const customers = new Set((level.guestVisits ?? []).flatMap(visit => visit.members ?? []).filter(actor => actor.role === 'customer').map(actor => actor.id));
+  for (const template of level.lostItemTemplates ?? []) {
+    if (!template.id || !template.name || !template.ownerName) errors.push('Lost item requires an id, name and owner');
+    if (!customers.has(template.ownerTemplateId)) errors.push(`${template.id}: owner is not a visiting customer`);
+    if (!Number.isInteger(template.startTick) || template.startTick < 0) errors.push(`${template.id}: invalid drop tick`);
+  }
+  if (level.id === 'bank') {
+    for (const actor of level.initialActors ?? []) if (/security guard|bank employee/.test(actor.role) && !isResident(actor)) errors.push(`${actor.id}: bank staff must be residents`);
+    for (const visit of level.guestVisits ?? []) for (const actor of visit.members) if (['customer','thief'].includes(actor.role) && !isGuest(actor)) errors.push(`${actor.id}: customers and thieves must be guests`);
+    if (!(level.guestVisits ?? []).some(v=>v.members.some(actor=>actor.role==='thief'))) errors.push('Bank needs a visiting thief');
+    if (!(level.initialActors ?? []).some(actor=>actor.role==='security guard')) errors.push('Bank needs a resident guard');
+  }
+  const mapRows = level.mapRows ?? 3;
+  const mapColumns = level.mapColumns ?? 3;
+  if (!Number.isInteger(mapRows) || mapRows<1 || !Number.isInteger(mapColumns) || mapColumns<1) errors.push('Invalid map grid dimensions');
+  if (level.mapCells?.length!==mapRows*mapColumns) errors.push(`Expected ${mapRows}×${mapColumns} map layout`);
+  const counts = new Map();
+  for (const cell of level.mapCells ?? []) {
+    if (typeof cell==='string') counts.set(cell, (counts.get(cell) ?? 0)+1);
+  }
+  for (const id of roomIds) {
+    if (!counts.has(id)) errors.push(`Zone ${id} omitted from map`);
+    const declared=level.roomById[id]?.spanCells ?? 1;
+    if (counts.get(id)!==declared) errors.push(`Zone ${id}: expected ${declared} map cells, got ${counts.get(id) ?? 0}`);
+  }
   return errors;
 }
 
@@ -124,6 +150,7 @@ export function initializeLevel(level, rng=Math.random) {
     actors:[...(level.initialActors ?? []).map(actor=>instantiateActor(actor)),...randomAnimals.actors],
     guestVisits:[...(level.guestVisits ?? []),...randomAnimals.visits],
     animalRolls:randomAnimals.rolls,
+    lostItems:initializeLostItems(level),
     objectiveProgress:[],
     dayRemaining:level.dayDurationSeconds,
     trapCount:level.toolItems.find(tool=>tool.name==='Ghost Trap')?.count ?? 0,
@@ -202,4 +229,48 @@ export function evaluateLevel(level,completedIds,focus,dayRemaining) {
   if (focus.length === 0) return {state:'lost', reason:'focus'};
   if (dayRemaining <= 0) return {state:'lost', reason:'day'};
   return {state:'playing',reason:null};
+}
+
+
+// The bank-specific incidents are pure functions. Other levels simply have no
+// lost-item templates and continue using exactly the same shared actor engine.
+export function initializeLostItems(level) {
+  return (level.lostItemTemplates ?? []).map(item=>({
+    ...item, status:'scheduled', room:null, recoveredBy:null, deliveredBy:null,
+  }));
+}
+
+export function dropScheduledLostItems(items,actors,tick) {
+  const dropped=[];
+  const next=items.map(item=>{
+    if (item.status!=='scheduled' || tick < item.startTick) return item;
+    const owner=actors.find(actor=>actor.templateId===item.ownerTemplateId && actor.role==='customer' && isGuest(actor));
+    if (!owner) return item; // Wait for a real guest, including a later visit.
+    const updated={...item,status:'dropped',room:owner.room};
+    dropped.push(updated);
+    return updated;
+  });
+  return {items:next,dropped};
+}
+
+export function recoverLostItem(items,itemId,selectedRoom) {
+  const item=items.find(entry=>entry.id===itemId);
+  if (!item || item.status!=='dropped' || item.room!==selectedRoom) return {items,item:null,ok:false};
+  return {items:items.map(entry=>entry.id===itemId?{...entry,status:'recovered',recoveredBy:'investigator'}:entry),item,ok:true};
+}
+
+export function returnLostItem(items,itemId,selectedRoom,actors,serviceRoom='LNF') {
+  const item=items.find(entry=>entry.id===itemId);
+  if (!item || item.status!=='recovered') return {items,item:null,ok:false};
+  const ownerPresent=actors.some(actor=>actor.templateId===item.ownerTemplateId && actor.role==='customer' && actor.room===selectedRoom && isGuest(actor));
+  const residentClerkPresent=selectedRoom===serviceRoom && actors.some(actor=>isResident(actor) && actor.role.includes('lost property')); // Customer care may accept it over the bank radio even when roaming.
+  if (!ownerPresent && !residentClerkPresent) return {items,item:null,ok:false};
+  const deliveredBy=ownerPresent?'owner':'lost_property_desk';
+  return {items:items.map(entry=>entry.id===itemId?{...entry,status:'returned',deliveredBy}:entry),item,ok:true,deliveredBy};
+}
+
+export function reportThief(actors,selectedRoom,actorId) {
+  const culprit=actors.find(actor=>actor.id===actorId && actor.room===selectedRoom && isGuest(actor) && actor.kind==='human' && actor.role==='thief');
+  if (!culprit) return {actors,reported:null,ok:false};
+  return {actors:actors.filter(actor=>actor.id!==actorId),reported:culprit,ok:true};
 }
