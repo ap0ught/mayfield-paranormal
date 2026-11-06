@@ -1,3 +1,6 @@
+import { HOTEL_LEVEL } from './hotel-level.js';
+import { PARK_ROLE_SCHEDULES } from './park-role-schedules.js';
+
 const HOUSE_ROOMS = [
   { id: '2A', name: 'Master Bedroom', short: 'Master', floor: '2F', image: 'master', glyph: '♛', color: '#f781d9', light: false, links: ['2B','1A'], ambient: ['a soft footstep by the bed', 'a dresser drawer sliding', 'fabric rustling'] },
   { id: '2B', name: 'Upstairs Bathroom', short: 'Bath', floor: '2F', image: 'bath', glyph: '✚', color: '#75ecf3', light: true, links: ['2A','2C','1B'], ambient: ['water dripping in the sink', 'a tap turning', 'the bathroom fan humming'] },
@@ -109,15 +112,16 @@ const PARK_ROOMS = [
 ];
 
 const PARK_LEVEL = {
+  roleSchedules: PARK_ROLE_SCHEDULES,
   id: 'park',
   title: 'Mayfield Park',
   subtitle: 'PARK INVESTIGATION · DRY TEST',
   roof: '🌳 🌳 🌳',
   mapBackground: 'park_map',
-  mapLabel: 'PARK MAP · LIVE',
-  detail1Name: 'Park map',
-  detail2Name: '4 zones (2×2)',
-  detail3Name: 'Live view',
+  mapLabel: 'PARK OVERVIEW · LIVE',
+  detail1Name: 'Live overview',
+  detail2Name: '4 × 2D stills',
+  detail3Name: 'Fixed 3D camera',
   mapDriveLabel: 'PARKING / ENTRY',
   mapTip: 'Six active park zones · the bottom row shows outside / parking / driveway',
   mapFooterKind: 'ACTORS',
@@ -128,8 +132,8 @@ const PARK_LEVEL = {
   mapsButtonLabel: 'Open park shelter',
   helpTitle: 'Investigate Mayfield Park',
   helpSteps: [
-    'Use the 3×3 park map to inspect the six active zones: shelter, swings, tree bench, and the three field sectors.',
-    'The bottom row of the map shows the outside edge, parking, and driveway / entry, while the 2×2 camera wall gives stop-motion updates.',
+    'Use the live 3×3 park overview to inspect the six 3D zones: shelter, swings, tree bench, and three soccer field sectors. The enlarged view is a fixed-position 3D camera.',
+    'The Park overview is a live 2D map. The 2×2 camera wall shows stop-motion 2D screenshots generated from each fixed 3D room camera.',
     'Listen for story points from investigators and park visitors. Unmuted rooms contribute to the central sound feed.',
     'Trap ghosts to replenish magenta focus. Story moments replenish gold focus.',
     'The cat and squirrel independently roll resident or guest status at the start. Complete all five objectives before the day ends or focus runs out.',
@@ -202,13 +206,154 @@ const PARK_LEVEL = {
   ],
 };
 
-for (const level of [HOUSE_LEVEL, PARK_LEVEL]) {
+
+// The bank uses the exact same 3 detail levels, actor lifecycle and mission engine.
+// Employees and security always stay; every thief and customer is a scheduled guest.
+const BANK_ROOMS = [
+  {id:'EN',name:'Main Entrance',short:'Entrance',floor:'PUBLIC',image:'bank_entry',glyph:'⬡',color:'#80e4ff',light:true,links:['LO','ATM'],ambient:['revolving doors swishing','footsteps from the street','the door chime sounding']},
+  {id:'LO',name:'Grand Lobby',short:'Lobby',floor:'PUBLIC',image:'bank_lobby',glyph:'✦',color:'#ffdf8a',light:true,links:['EN','T1','Q1'],ambient:['quiet conversation in the lobby','polished shoes on marble','soft bank music']},
+  {id:'T1',name:'Teller Counters',short:'Tellers',floor:'PUBLIC',image:'bank_teller',glyph:'$',color:'#74efb4',light:true,links:['LO','OFF'],ambient:['cash counter clicking','teller drawer closing','a deposit receipt printing']},
+  {id:'ATM',name:'ATM Lounge',short:'ATM',floor:'PUBLIC',image:'bank_atm',glyph:'▣',color:'#80bfff',light:true,links:['EN','Q1','LNF'],ambient:['ATM keypad beeping','a card reader chiming','cash dispenser humming']},
+  {id:'Q1',name:'Customer Queue',short:'Queue',floor:'PUBLIC',image:'bank_queue',glyph:'◈',color:'#ed9cfa',light:true,links:['LO','ATM','OFF','SEC'],ambient:['queue ropes rattling','a ticket number being called','customers talking quietly']},
+  {id:'OFF',name:'Banking Office',short:'Office',floor:'PRIVATE',image:'bank_office',glyph:'✎',color:'#ffc091',light:true,links:['T1','Q1','VF'],ambient:['keyboard typing','papers shuffling','a pen clicking against a desk']},
+  {id:'LNF',name:'Lost Property Desk',short:'Lost Desk',floor:'SERVICE',image:'bank_lostfound',glyph:'❖',color:'#f1cc76',light:true,links:['ATM','SEC'],ambient:['a customer asking for help','a lost-property register opening','a phone ringing at the service desk']},
+  {id:'SEC',name:'Security Control',short:'Security',floor:'SECURE',image:'bank_security',glyph:'⚑',color:'#f48f88',light:true,links:['LNF','Q1','VF'],ambient:['security radio crackling','a monitor beeping','guards discussing the camera feeds']},
+  {id:'VF',name:'Vault',short:'Vault',floor:'SECURE',image:'bank_vault',glyph:'⬟',color:'#bda0ff',light:false,links:['OFF','SEC'],ambient:['the vault lock clicking','metal echoing in the vault','an air vent humming']},
+];
+
+const BANK_LEVEL = {
+  id:'bank',title:'Mayfield Bank',subtitle:'BANK SECURITY · GHOST WATCH',roof:'🏦 ⬟ 🏦',
+  mapBackground:'bank_map',mapLabel:'BANK CAMERAS · LIVE',detail1Name:'Bank map',detail2Name:'4 cameras (2×2)',detail3Name:'Live room',
+  mapDriveLabel:'STREET / ENTRANCE',mapTip:'Nine monitored bank zones · watch guests, thieves, and lost property',
+  mapFooterKind:'ACTORS',mapFooterLitTotal:9,activityLabel:'BANK ACTIVITY',
+  mapsButtonCopy:'Nine linked bank zones. Employees and security are residents. Customers and thieves arrive as guests, conduct their business, and exit.',
+  mapsButtonTarget:'EN',mapsButtonLabel:'Monitor the main entrance',
+  helpTitle:'Protect Mayfield Bank',
+  helpSteps:[
+    'Monitor the 3×3 bank map. Employees and security stay on duty; all customers and thieves are temporary guests.',
+    'The 2×2 camera wall refreshes in stop-motion; Detail 3 has a 60-second live inspection window. Every unmuted camera contributes to the sound monitor.',
+    'When a suspicious guest is visible in the selected room, report the thief to resident security before that guest escapes.',
+    'When a customer drops a possession, inspect the room to recover it. Return it to the owner when they are present, or leave it with resident customer care.',
+    'Catch a ghost and finish all five objectives before the bank closes or your focus reaches zero.',
+  ],
+  rooms:BANK_ROOMS,mapCells:['EN','LO','T1','ATM','Q1','OFF','LNF','SEC','VF'],
+  defaultSelected:'LO',defaultCameras:['EN','T1','Q1','VF'],initialMuted:{VF:false},dayDurationSeconds:300,
+  objectives:[
+    {id:'watch-entry',label:'Inspect the main entrance',hint:'Open the EN camera.',eventType:'inspect',room:'EN'},
+    {id:'report-thief',label:'Report a thief to security',hint:'Find a suspicious guest, select their room and alert security before they leave.',eventType:'thief_reported'},
+    {id:'recover-item',label:'Recover a customer’s lost item',hint:'Check the glowing lost-item marker and recover the possession.',eventType:'item_recovered'},
+    {id:'return-item',label:'Return the item to its owner',hint:'Follow the owner or bring the recovered item to resident lost-property staff.',eventType:'item_returned'},
+    {id:'catch-ghost',label:'Trap a bank ghost',hint:'Inspect a haunted bank room and activate Ghost Trap.',eventType:'capture_ghost'},
+  ],
+  randomAnimals:[],
+  initialActors:[
+    {id:'teller-ava',name:'Ava',kind:'human',stay:'resident',role:'bank employee / teller',color:'#81dcff',room:'T1',x:23,dir:1,speed:2.4,route:['T1','LO','T1','OFF','T1']},
+    {id:'banker',name:'Martin',kind:'human',stay:'resident',role:'bank employee / manager',color:'#ffce86',room:'OFF',x:64,dir:-1,speed:2.4,route:['OFF','T1','LO','Q1','OFF']},
+    {id:'guard-alex',name:'Alex',kind:'human',stay:'resident',role:'security guard',color:'#8cdaff',room:'SEC',x:23,dir:1,speed:3.1,route:['SEC','Q1','LO','EN','ATM','Q1','SEC']},
+    {id:'guard-renee',name:'Renee',kind:'human',stay:'resident',role:'security guard',color:'#a0f1cc',room:'LO',x:69,dir:-1,speed:2.8,route:['LO','EN','ATM','Q1','OFF','T1','LO']},
+    {id:'care-clerk',name:'June',kind:'human',stay:'resident',role:'bank employee / lost property clerk',color:'#f9a7ce',room:'LNF',x:60,dir:-1,speed:2.0,route:['LNF','ATM','LNF','SEC','LNF']},
+    {id:'vault-spirit',name:'The Night Auditor',kind:'ghost',stay:'resident',role:'vault ghost',color:'#c3afff',room:'VF',x:70,dir:-1,speed:1.2,route:['VF','SEC','VF']},
+  ],
+  guestVisits:[
+    {id:'wallet-customer',startTick:10,repeatEvery:190,members:[
+      {id:'customer-nina',name:'Nina',kind:'human',stay:'guest',role:'customer',color:'#ff9fa4',room:'EN',x:15,dir:1,speed:2.4,route:['EN','LO','Q1','ATM','Q1','LO','EN']},
+    ]},
+    {id:'thief-visit',startTick:20,repeatEvery:170,members:[
+      {id:'bank-thief',name:'Suspicious Visitor',kind:'human',stay:'guest',role:'thief',color:'#c7b0ff',room:'EN',x:12,dir:1,speed:3.5,route:['EN','LO','T1','OFF','Q1','LO','EN']},
+    ]},
+    {id:'customer2',startTick:35,repeatEvery:205,members:[
+      {id:'customer-omar',name:'Omar',kind:'human',stay:'guest',role:'customer',color:'#8be6b0',room:'EN',x:12,dir:1,speed:2.9,route:['EN','ATM','Q1','OFF','T1','LO','EN']},
+    ]},
+    {id:'customer3',startTick:70,repeatEvery:210,members:[
+      {id:'customer-ivy',name:'Ivy',kind:'human',stay:'guest',role:'customer',color:'#eec184',room:'EN',x:14,dir:1,speed:3.2,route:['EN','LO','Q1','ATM','LNF','ATM','EN']},
+    ]},
+    {id:'wandering-bank-spirit',startTick:120,repeatEvery:250,members:[
+      {id:'lost-accountant',name:'Lost Accountant',kind:'ghost',stay:'guest',role:'visiting ghost',color:'#9cddff',room:'VF',x:13,dir:1,speed:3.8,route:['VF','SEC','Q1','LO','EN']},
+    ]},
+  ],
+  lostItemTemplates:[
+    {id:'wallet-nina',name:'Nina’s Wallet',ownerTemplateId:'customer-nina',ownerName:'Nina',startTick:17,icon:'👛'},
+    {id:'keys-ivy',name:'Ivy’s Keys',ownerTemplateId:'customer-ivy',ownerName:'Ivy',startTick:79,icon:'🔑'},
+  ],
+  mainConversations:[
+    {from:'Ava (Teller)',to:'Renee (Security)',a:'The visitor by the counters keeps watching the drawers instead of the bank signs.',b:'I’ll watch the cameras. Nobody leaves with another person’s things.'},
+    {from:'Nina (Customer)',to:'June (Customer Care)',a:'I think my wallet slipped out of my coat while I was waiting.',b:'We’ll search the cameras and get it back to you.'},
+    {from:'Martin (Manager)',to:'Alex (Guard)',a:'The vault alarm sounded after the lights were turned off.',b:'No one was inside. That’s the part I can’t explain.'},
+  ],
+  storyEvents:[
+    {id:'old-vault',room:'VF',who:'Martin',text:'The vault was sealed for twenty years, but someone still appears on the night camera.',reward:4},
+    {id:'teller-story',room:'T1',who:'Ava',text:'The receipt printer produced a name that belonged to an employee who died decades ago.',reward:4},
+    {id:'security-story',room:'SEC',who:'Renee',text:'There are two guards on shift but the security monitor keeps counting three shadows.',reward:4},
+  ],
+  startLogEntries:[
+    {room:'LO',kind:'ambient',text:'Visitors talking quietly in the bank lobby.'},
+    {room:'T1',kind:'ambient',text:'Coins clinking and deposit paperwork moving.'},
+    {room:'SEC',kind:'ambient',text:'Security radio: all sectors online.'},
+    {room:'VF',kind:'ghost',text:'A whispered number echoes from the sealed vault.'},
+  ],
+  toolItems:[
+    {name:'Ghost Trap',icon:'◎',count:2,color:'#70eff8',details:'Captures a ghost visible in the live camera feed.'},
+    {name:'EMF Reader',icon:'▥',count:1,color:'#92b7ff',details:'Search the bank for paranormal energy.'},
+    {name:'Security Radio',icon:'⚑',count:1,color:'#ffb47c',details:'Report a suspicious visitor in the live feed; resident security responds.'},
+    {name:'Lost Property Kit',icon:'▣',count:1,color:'#ffe298',details:'Recover dropped customer property from the selected bank zone.'},
+    {name:'Audio Recorder',icon:'◉',count:1,color:'#d0e2f2',details:'Record customer conversations or strange EVP sounds.'},
+    {name:'Binding Tome',icon:'▤',count:1,color:'#c68cff',details:'Review the captured ghost evidence.'},
+  ],
+};
+
+
+// Bank extension: a true 4×4 map, with the original nine connected zones preserved.
+const BANK_EXTRA_ROOMS = [
+  {id:'T2',name:'Express Teller Counters',short:'Express Tellers',floor:'PUBLIC',image:'bank_teller2',glyph:'₿',color:'#9dedbd',light:true,links:[],ambient:['the express teller scanner','a small stack of deposit slips']},
+  {id:'CL',name:'Customer Lounge',short:'Lounge',floor:'PUBLIC',image:'bank_lounge',glyph:'☕',color:'#f4c28d',light:true,links:[],ambient:['visitors chatting on the sofas','the coffee machine brewing']},
+  {id:'CS',name:'Consultation Suite',short:'Consultation',floor:'PRIVATE',image:'bank_consult',glyph:'✧',color:'#b6a2f5',light:true,links:[],ambient:['a private consultation','a document being signed']},
+  {id:'CR',name:'Cash Counting Room',short:'Counting',floor:'SECURE',image:'bank_counting',glyph:'⊕',color:'#f2da8b',light:true,links:[],ambient:['cash counting machines','a metal drawer locking']},
+  {id:'WS',name:'Wire Transfer Desk',short:'Wire Desk',floor:'SERVICE',image:'bank_wire',glyph:'⌁',color:'#81e9ef',light:true,links:[],ambient:['transfer confirmations printing','a telephone ringing at the wire desk']},
+  {id:'BR',name:'Employee Break Room',short:'Break Room',floor:'STAFF',image:'bank_break',glyph:'♨',color:'#f5a9ce',light:true,links:[],ambient:['a kettle heating up','the refrigerator humming']},
+  {id:'AR',name:'Records Archive',short:'Archive',floor:'SECURE',image:'bank_archive',glyph:'▥',color:'#a8c0ff',light:false,links:[],ambient:['file drawers rattling','the archive fan turning']},
+];
+BANK_LEVEL.rooms.push(...BANK_EXTRA_ROOMS);
+BANK_LEVEL.mapRows=4;
+BANK_LEVEL.mapColumns=4;
+BANK_LEVEL.mapCells = [
+  'EN','LO','T1','T2',
+  'ATM','Q1','OFF','CL',
+  'LNF','SEC','CS','CR',
+  'WS','BR','AR','VF',
+];
+BANK_LEVEL.mapFooterLitTotal=16;
+BANK_LEVEL.mapTip='4×4 bank · 16 live zones · employees resident · customers and thieves are guests';
+BANK_LEVEL.mapsButtonCopy='Four rows and four columns with 16 monitored zones. Original cameras, staff, thieves, lost items and security rules are preserved.';
+BANK_LEVEL.helpSteps[0]='The bank has a 4×4 live map with 16 connected rooms. Employees and security remain on duty; customers and thieves are temporary guests.';
+BANK_LEVEL.detail1Name='Bank map (4×4)';
+const extraBankEdges = [
+  ['T1','T2'],['T2','CL'],['CL','OFF'],['CL','CS'],['CS','OFF'],['CS','CR'],
+  ['CR','SEC'],['CR','AR'],['WS','LNF'],['WS','BR'],['BR','SEC'],['BR','AR'],['AR','VF'],
+];
+const bankById = Object.fromEntries(BANK_LEVEL.rooms.map(room=>[room.id,room]));
+for (const [a,b] of extraBankEdges) {
+  if (!bankById[a].links.includes(b)) bankById[a].links.push(b);
+  if (!bankById[b].links.includes(a)) bankById[b].links.push(a);
+}
+BANK_LEVEL.initialActors.push(
+  {id:'express-teller',name:'Harper',kind:'human',stay:'resident',role:'bank employee / express teller',color:'#a6ffcb',room:'T2',x:30,dir:1,speed:2.5,route:['T2','T1','LO','T1','T2']},
+  {id:'archivist',name:'Remy',kind:'human',stay:'resident',role:'bank employee / records archivist',color:'#b5b6f8',room:'AR',x:65,dir:-1,speed:2.5,route:['AR','VF','SEC','BR','AR']},
+);
+BANK_LEVEL.guestVisits.push({id:'consultation-customer',startTick:55,repeatEvery:210,members:[
+  {id:'customer-consult',name:'Taylor',kind:'human',stay:'guest',role:'customer',color:'#e3adf9',room:'EN',x:15,dir:1,speed:2.8,route:['EN','LO','T1','T2','CL','CS','OFF','Q1','LO','EN']},
+]});
+BANK_LEVEL.storyEvents.push({id:'archive-story',room:'AR',who:'Remy',text:'The archive drawers keep opening to the same lost ledger, even after I lock them.',reward:4});
+BANK_LEVEL.startLogEntries.push({room:'CR',kind:'ambient',text:'Cash machines run behind a secure door.'});
+
+for (const level of [HOUSE_LEVEL, PARK_LEVEL, BANK_LEVEL, HOTEL_LEVEL]) {
   level.roomById = Object.fromEntries(level.rooms.map(room => [room.id, room]));
 }
 
 export const LEVELS = {
   house: HOUSE_LEVEL,
   park: PARK_LEVEL,
+  bank: BANK_LEVEL,
+  hotel: HOTEL_LEVEL,
 };
 
 export const DEFAULT_LEVEL_ID = 'house';

@@ -83,3 +83,56 @@ button{background:transparent;border:0}.app-shell{width:100%;max-width:2100px;mi
 .game-end-actions button:hover{filter:brightness(1.2)}
 /* The five mission items and animal roll outcomes need to remain reachable on shorter screens. */
 .tools-area,.ticker-area{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#6b819b #0d1829}
+/* Bank-specific incidents use the same feed and map rather than a separate renderer. */
+.lost-item-scene{position:absolute;left:24%;bottom:11%;z-index:5;display:flex;align-items:center;gap:5px;padding:5px 9px;background:#231b32ee;border:2px solid #fbe49b;border-radius:7px;color:#ffe8a4;font-size:19px;box-shadow:0 0 14px #ffdd71;animation:blink 2.7s infinite}
+.lost-item-scene span{font-size:10px;font-weight:900;white-space:nowrap}
+.scene-small .lost-item-scene{font-size:12px;padding:2px 3px;bottom:4%}
+.scene-small .lost-item-scene span{font-size:7px}
+.map-lost-item{position:absolute;bottom:24px;left:5px;font-size:14px;filter:drop-shadow(0 0 6px #ffe287)}
+.bank-live-actions{position:absolute;z-index:9;bottom:52px;left:50%;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:5px;max-width:90%}
+.bank-live-actions button{border:2px solid #efca75;border-radius:8px;padding:7px 10px;color:#fff1c2;font-size:11px;font-weight:800;background:linear-gradient(#4e3545,#1b1834);box-shadow:0 0 11px #f3c86199;white-space:nowrap}
+.bank-live-actions button:first-child{border-color:#ff8998;background:#481e35}
+
+/* Dynamic level maps: 3×3 house/park, 4×4 bank, 6×6 hotel. */
+.map-grid-medium .map-room>.camera-glyph{font-size:clamp(13px,1.4vw,20px);top:25%}
+.map-grid-medium .tile-controls{font-size:8px;padding:0 2px}
+.map-grid-medium .tile-light{padding:1px}
+.map-grid-dense{gap:1px}
+.map-grid-dense .map-room{border-width:1px;background:rgba(0,8,23,.19)}
+.map-grid-dense .map-room.unlit{background:rgba(0,3,14,.78)}
+.map-grid-dense .map-room.chosen{border:2px solid #ffe478;box-shadow:inset 0 0 7px #eeca45,0 0 6px #f0bc4f}
+.map-grid-dense .map-room>.camera-glyph{font-size:clamp(9px,.9vw,15px);top:29%}
+.map-grid-dense .tile-controls{font-size:7px;padding:0 1px}
+.map-grid-dense .tile-light{padding:0}
+.map-grid-dense .tile-light svg{width:9px;height:9px}
+.map-grid-dense .tile-people{gap:1px;right:1px}
+.map-grid-dense .tile-people i{width:3px;height:6px}
+.map-grid-dense .map-ghost{font-size:11px;line-height:1}
+
+/* Actor spritesheets: six transparent 64x88 cells, with four walking poses.
+   Live view smoothly advances walking frames. Detail 2 is explicitly stop-motion. */
+.person-sprite.actor-sprite{width:39px;height:56px;animation:none;filter:drop-shadow(0 0 2px #000) drop-shadow(0 0 1px var(--person-color))}
+.person-sprite.actor-sprite.person-small{width:23px;height:35px;animation:none;transition:none}
+.person-sprite.actor-sprite.person-animal{width:41px;height:44px;bottom:9%}
+.person-sprite.actor-sprite.person-animal.person-small{width:30px;height:29px;bottom:8%}
+.actor-pixels{display:block;width:100%;height:100%;background-size:600% 100%;background-repeat:no-repeat;image-rendering:pixelated;background-position:0% 0%;transform:scaleX(1)}
+.actor-sprite.actor-walking:not(.person-small) .actor-pixels{animation:mayfield-sprite-walk .64s steps(4,end) infinite}
+.actor-sprite.person-small .actor-pixels{animation:none}
+.simulation-paused .actor-pixels{animation-play-state:paused!important}.simulation-paused .ghost-actor{animation-play-state:paused!important}
+/* Stop-motion feed: the 1.3-second React snapshot updates both position and pose. */
+@keyframes mayfield-sprite-walk{from{background-position-x:20%}to{background-position-x:100%}}
+.ghost-actor{width:10%;height:55%;object-fit:unset;opacity:.86;image-rendering:pixelated}
+.ghost-actor .actor-pixels{animation:mayfield-ghost-cycle 1.1s steps(4,end) infinite}
+.scene-small .ghost-actor .actor-pixels{animation:none}
+@keyframes mayfield-ghost-cycle{from{background-position-x:20%}to{background-position-x:100%}}
+@media(prefers-reduced-motion:reduce){.actor-pixels{animation:none!important}.ghost-actor{animation:none!important}}
+/* Park: a shared real 3D scene with a fixed camera; downsampled 2D mini feeds. */
+.park-3d-stage{position:relative;width:100%;height:100%;border-radius:6px;overflow:hidden;background:#071a25;border:1px solid #7ba6ad}
+.park-3d-stage>canvas{display:block;width:100%;height:100%;touch-action:none}
+.park-stage-badge,.park-snapshot-badge{position:absolute;z-index:2;bottom:5px;left:6px;pointer-events:none;color:#a7ffda;background:rgba(4,23,28,.82);border:1px solid #56aaa0;border-radius:3px;padding:3px 6px;font-size:8px;font-weight:800;letter-spacing:.5px}
+.park-stage-badge{bottom:45px;left:10px}
+.park3d-error{position:absolute;inset:0;background:#0a1b2d;color:#ffe1b5;display:grid;place-content:center;text-align:center;padding:18px;font-size:12px}
+.park-2d-stage{width:100%;height:100%;position:relative;background:#0a1b29}
+.park-2d-stage>img{width:100%;height:100%;object-fit:fill;display:block;image-rendering:auto;filter:contrast(1.12) saturate(1.12)}
+.park-snapshot-loading{height:100%;display:grid;place-items:center;color:#c1dae3;font-size:11px}
+.park-snapshot-badge{bottom:18px;left:4px}

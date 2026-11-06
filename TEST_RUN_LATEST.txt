@@ -1,214 +1,464 @@
-Ran npm test with Node built-in test runner
 
-
-> mayfield-paranormal-surveillance@1.1.0 test
+> mayfield-paranormal-surveillance@1.2.0 test
 > node --test tests/*.test.js
 
 TAP version 13
-# Subtest: house: every zone, actor route, camera, and guest schedule is valid
-ok 1 - house: every zone, actor route, camera, and guest schedule is valid
+# Subtest: bank map has sixteen connected zones and four live camera assignments
+ok 1 - bank map has sixteen connected zones and four live camera assignments
   ---
-  duration_ms: 2.287041
+  duration_ms: 2.714522
+  type: 'test'
+  ...
+# Subtest: bank employees and security guards are always residents; thieves and customers are guests
+ok 2 - bank employees and security guards are always residents; thieves and customers are guests
+  ---
+  duration_ms: 0.442411
+  type: 'test'
+  ...
+# Subtest: lost property waits for real customer, spawns once and persists after customer departs
+ok 3 - lost property waits for real customer, spawns once and persists after customer departs
+  ---
+  duration_ms: 0.595025
+  type: 'test'
+  ...
+# Subtest: picking up lost property requires inspecting the correct zone
+ok 4 - picking up lost property requires inspecting the correct zone
+  ---
+  duration_ms: 0.27224
+  type: 'test'
+  ...
+# Subtest: returning an item requires its real owner or the resident lost-property desk
+ok 5 - returning an item requires its real owner or the resident lost-property desk
+  ---
+  duration_ms: 0.348683
+  type: 'test'
+  ...
+# Subtest: false theft accusations do nothing; actual thief triggers resident security response
+ok 6 - false theft accusations do nothing; actual thief triggers resident security response
+  ---
+  duration_ms: 0.409272
+  type: 'test'
+  ...
+# Subtest: bank HAPPY PATH: inspect, report thief, recover and return item, capture ghost → victory
+ok 7 - bank HAPPY PATH: inspect, report thief, recover and return item, capture ghost → victory
+  ---
+  duration_ms: 1.074961
+  type: 'test'
+  ...
+# Subtest: bank GAME OVER: the day ends before all five tasks are complete
+ok 8 - bank GAME OVER: the day ends before all five tasks are complete
+  ---
+  duration_ms: 0.144923
+  type: 'test'
+  ...
+# Subtest: bank GAME OVER: focus is exhausted while still investigating
+ok 9 - bank GAME OVER: focus is exhausted while still investigating
+  ---
+  duration_ms: 0.358167
+  type: 'test'
+  ...
+# Subtest: Hotel: original six-floor concept uses 6×6 cells, 27 zones, 6 camera feeds
+ok 10 - Hotel: original six-floor concept uses 6×6 cells, 27 zones, 6 camera feeds
+  ---
+  duration_ms: 3.171433
+  type: 'test'
+  ...
+# Subtest: Hotel: the two-cell presidential suite is one independent simulation zone
+ok 11 - Hotel: the two-cell presidential suite is one independent simulation zone
+  ---
+  duration_ms: 0.554556
+  type: 'test'
+  ...
+# Subtest: Hotel: resident staff never naturally leave; visiting hotel guests exit
+ok 12 - Hotel: resident staff never naturally leave; visiting hotel guests exit
+  ---
+  duration_ms: 0.729953
+  type: 'test'
+  ...
+# Subtest: Bank: sixteen unique 4×4 rooms retain incident and visitor systems
+ok 13 - Bank: sixteen unique 4×4 rooms retain incident and visitor systems
+  ---
+  duration_ms: 0.473266
+  type: 'test'
+  ...
+# Subtest: Farm: a separate 3×3 field, not farm buildings occupying field cells
+ok 14 - Farm: a separate 3×3 field, not farm buildings occupying field cells
+  ---
+  duration_ms: 0.698717
+  type: 'test'
+  ...
+# Subtest: Farm example: guest visit, resident continuity and randomized rabbit statuses
+ok 15 - Farm example: guest visit, resident continuity and randomized rabbit statuses
+  ---
+  duration_ms: 0.331137
+  type: 'test'
+  ...
+# Subtest: Hotel and Bank: all five real mission events win; day and focus expiry lose
+ok 16 - Hotel and Bank: all five real mission events win; day and focus expiry lose
+  ---
+  duration_ms: 0.552182
+  type: 'test'
+  ...
+# Subtest: Map renderer and camera renderer use each level’s dimensions, not hard-coded 3×3/2×2
+ok 17 - Map renderer and camera renderer use each level’s dimensions, not hard-coded 3×3/2×2
+  ---
+  duration_ms: 0.366528
+  type: 'test'
+  ...
+# Subtest: Validator rejects bad custom layout and wrong declared suite span
+ok 18 - Validator rejects bad custom layout and wrong declared suite span
+  ---
+  duration_ms: 0.499645
+  type: 'test'
+  ...
+# Subtest: house: every zone, actor route, camera, and guest schedule is valid
+ok 19 - house: every zone, actor route, camera, and guest schedule is valid
+  ---
+  duration_ms: 2.252613
   type: 'test'
   ...
 # Subtest: house: all map and scene illustrations exist
-ok 2 - house: all map and scene illustrations exist
+ok 20 - house: all map and scene illustrations exist
   ---
-  duration_ms: 1.247093
+  duration_ms: 0.303166
   type: 'test'
   ...
 # Subtest: house: initialization creates an independent resident population
-ok 3 - house: initialization creates an independent resident population
+ok 21 - house: initialization creates an independent resident population
   ---
-  duration_ms: 0.698286
+  duration_ms: 0.624208
   type: 'test'
   ...
 # Subtest: house: residents move through linked zones without leaving
-ok 4 - house: residents move through linked zones without leaving
+ok 22 - house: residents move through linked zones without leaving
   ---
-  duration_ms: 0.345147
+  duration_ms: 0.282305
   type: 'test'
   ...
 # Subtest: house: scheduled guest arrives, crosses adjacent zones and exits
-ok 5 - house: scheduled guest arrives, crosses adjacent zones and exits
+ok 23 - house: scheduled guest arrives, crosses adjacent zones and exits
   ---
-  duration_ms: 0.604588
+  duration_ms: 0.393328
   type: 'test'
   ...
-# Subtest: house: scheduled guests are human, animal and ghost actors
-ok 6 - house: scheduled guests are human, animal and ghost actors
+# Subtest: house: scheduled guests use supported actor kinds
+ok 24 - house: scheduled guests use supported actor kinds
   ---
-  duration_ms: 0.492264
+  duration_ms: 0.279932
   type: 'test'
   ...
 # Subtest: park: every zone, actor route, camera, and guest schedule is valid
-ok 7 - park: every zone, actor route, camera, and guest schedule is valid
+ok 25 - park: every zone, actor route, camera, and guest schedule is valid
   ---
-  duration_ms: 0.465064
+  duration_ms: 0.362924
   type: 'test'
   ...
 # Subtest: park: all map and scene illustrations exist
-ok 8 - park: all map and scene illustrations exist
+ok 26 - park: all map and scene illustrations exist
   ---
-  duration_ms: 0.243838
+  duration_ms: 1.151893
   type: 'test'
   ...
 # Subtest: park: initialization creates an independent resident population
-ok 9 - park: initialization creates an independent resident population
+ok 27 - park: initialization creates an independent resident population
   ---
-  duration_ms: 0.497942
+  duration_ms: 0.459636
   type: 'test'
   ...
 # Subtest: park: residents move through linked zones without leaving
-ok 10 - park: residents move through linked zones without leaving
+ok 28 - park: residents move through linked zones without leaving
   ---
-  duration_ms: 0.617488
+  duration_ms: 0.442902
   type: 'test'
   ...
 # Subtest: park: scheduled guest arrives, crosses adjacent zones and exits
-ok 11 - park: scheduled guest arrives, crosses adjacent zones and exits
+ok 29 - park: scheduled guest arrives, crosses adjacent zones and exits
   ---
-  duration_ms: 0.253363
+  duration_ms: 0.268174
   type: 'test'
   ...
-# Subtest: park: scheduled guests are human, animal and ghost actors
-ok 12 - park: scheduled guests are human, animal and ghost actors
+# Subtest: park: scheduled guests use supported actor kinds
+ok 30 - park: scheduled guests use supported actor kinds
   ---
-  duration_ms: 0.307342
+  duration_ms: 0.181137
+  type: 'test'
+  ...
+# Subtest: bank: every zone, actor route, camera, and guest schedule is valid
+ok 31 - bank: every zone, actor route, camera, and guest schedule is valid
+  ---
+  duration_ms: 0.294322
+  type: 'test'
+  ...
+# Subtest: bank: all map and scene illustrations exist
+ok 32 - bank: all map and scene illustrations exist
+  ---
+  duration_ms: 0.509569
+  type: 'test'
+  ...
+# Subtest: bank: initialization creates an independent resident population
+ok 33 - bank: initialization creates an independent resident population
+  ---
+  duration_ms: 0.127798
+  type: 'test'
+  ...
+# Subtest: bank: residents move through linked zones without leaving
+ok 34 - bank: residents move through linked zones without leaving
+  ---
+  duration_ms: 0.059998
+  type: 'test'
+  ...
+# Subtest: bank: scheduled guest arrives, crosses adjacent zones and exits
+ok 35 - bank: scheduled guest arrives, crosses adjacent zones and exits
+  ---
+  duration_ms: 0.089942
+  type: 'test'
+  ...
+# Subtest: bank: scheduled guests use supported actor kinds
+ok 36 - bank: scheduled guests use supported actor kinds
+  ---
+  duration_ms: 0.126896
+  type: 'test'
+  ...
+# Subtest: hotel: every zone, actor route, camera, and guest schedule is valid
+ok 37 - hotel: every zone, actor route, camera, and guest schedule is valid
+  ---
+  duration_ms: 0.124573
+  type: 'test'
+  ...
+# Subtest: hotel: all map and scene illustrations exist
+ok 38 - hotel: all map and scene illustrations exist
+  ---
+  duration_ms: 0.338067
+  type: 'test'
+  ...
+# Subtest: hotel: initialization creates an independent resident population
+ok 39 - hotel: initialization creates an independent resident population
+  ---
+  duration_ms: 0.08888
+  type: 'test'
+  ...
+# Subtest: hotel: residents move through linked zones without leaving
+ok 40 - hotel: residents move through linked zones without leaving
+  ---
+  duration_ms: 0.152734
+  type: 'test'
+  ...
+# Subtest: hotel: scheduled guest arrives, crosses adjacent zones and exits
+ok 41 - hotel: scheduled guest arrives, crosses adjacent zones and exits
+  ---
+  duration_ms: 0.273823
+  type: 'test'
+  ...
+# Subtest: hotel: scheduled guests use supported actor kinds
+ok 42 - hotel: scheduled guests use supported actor kinds
+  ---
+  duration_ms: 0.126436
   type: 'test'
   ...
 # Subtest: DRY-test park has six simulated zones in a 3×3 map including three outside cells
-ok 13 - DRY-test park has six simulated zones in a 3×3 map including three outside cells
+ok 43 - DRY-test park has six simulated zones in a 3×3 map including three outside cells
   ---
-  duration_ms: 0.220504
+  duration_ms: 0.144442
   type: 'test'
   ...
 # Subtest: park has two photographers with the same role and different stay
-ok 14 - park has two photographers with the same role and different stay
+ok 44 - park has two photographers with the same role and different stay
   ---
-  duration_ms: 0.27837
+  duration_ms: 0.160355
   type: 'test'
   ...
 # Subtest: visiting family enters as a group and departs while park residents remain
-ok 15 - visiting family enters as a group and departs while park residents remain
+ok 45 - visiting family enters as a group and departs while park residents remain
   ---
-  duration_ms: 2.738275
+  duration_ms: 2.057305
   type: 'test'
   ...
 # Subtest: focus drains one at a time and restores with colored category caps
-ok 16 - focus drains one at a time and restores with colored category caps
+ok 46 - focus drains one at a time and restores with colored category caps
   ---
-  duration_ms: 0.345047
+  duration_ms: 0.27231
   type: 'test'
   ...
 # Subtest: muted zones disappear from sound log and activity filters still work
-ok 17 - muted zones disappear from sound log and activity filters still work
+ok 47 - muted zones disappear from sound log and activity filters still work
   ---
-  duration_ms: 0.279802
+  duration_ms: 0.155859
   type: 'test'
   ...
 # Subtest: validation catches illegal guest route skips
-ok 18 - validation catches illegal guest route skips
+ok 48 - validation catches illegal guest route skips
   ---
-  duration_ms: 0.212372
+  duration_ms: 0.191221
   type: 'test'
   ...
 # Subtest: house: randomized animal can be either a resident or a guest at load
-ok 19 - house: randomized animal can be either a resident or a guest at load
+ok 49 - house: randomized animal can be either a resident or a guest at load
   ---
-  duration_ms: 0.403624
+  duration_ms: 0.458614
   type: 'test'
   ...
 # Subtest: house: randomized guest animal enters and naturally leaves; resident never exits
-ok 20 - house: randomized guest animal enters and naturally leaves; resident never exits
+ok 50 - house: randomized guest animal enters and naturally leaves; resident never exits
   ---
-  duration_ms: 2.748119
+  duration_ms: 1.561906
   type: 'test'
   ...
 # Subtest: house: HAPPY PATH — five successful actions immediately win
-ok 21 - house: HAPPY PATH — five successful actions immediately win
+ok 51 - house: HAPPY PATH — five successful actions immediately win
   ---
-  duration_ms: 0.29279
+  duration_ms: 0.321663
   type: 'test'
   ...
 # Subtest: house: GAME OVER — day runs out with an unfinished mission
-ok 22 - house: GAME OVER — day runs out with an unfinished mission
+ok 52 - house: GAME OVER — day runs out with an unfinished mission
   ---
-  duration_ms: 0.274474
+  duration_ms: 0.286892
   type: 'test'
   ...
 # Subtest: house: GAME OVER — focus reaches zero while the day is ongoing
-ok 23 - house: GAME OVER — focus reaches zero while the day is ongoing
+ok 53 - house: GAME OVER — focus reaches zero while the day is ongoing
   ---
-  duration_ms: 0.119265
+  duration_ms: 0.141839
   type: 'test'
   ...
 # Subtest: house: objective completion is idempotent and ignores unrelated actions
-ok 24 - house: objective completion is idempotent and ignores unrelated actions
+ok 54 - house: objective completion is idempotent and ignores unrelated actions
   ---
-  duration_ms: 0.093217
+  duration_ms: 0.153245
   type: 'test'
   ...
 # Subtest: park: randomized animal can be either a resident or a guest at load
-ok 25 - park: randomized animal can be either a resident or a guest at load
+ok 55 - park: randomized animal can be either a resident or a guest at load
   ---
-  duration_ms: 0.138604
+  duration_ms: 0.136931
   type: 'test'
   ...
 # Subtest: park: randomized guest animal enters and naturally leaves; resident never exits
-ok 26 - park: randomized guest animal enters and naturally leaves; resident never exits
+ok 56 - park: randomized guest animal enters and naturally leaves; resident never exits
   ---
-  duration_ms: 1.535086
+  duration_ms: 1.021792
   type: 'test'
   ...
 # Subtest: park: HAPPY PATH — five successful actions immediately win
-ok 27 - park: HAPPY PATH — five successful actions immediately win
+ok 57 - park: HAPPY PATH — five successful actions immediately win
   ---
-  duration_ms: 0.103292
+  duration_ms: 0.111945
   type: 'test'
   ...
 # Subtest: park: GAME OVER — day runs out with an unfinished mission
-ok 28 - park: GAME OVER — day runs out with an unfinished mission
+ok 58 - park: GAME OVER — day runs out with an unfinished mission
   ---
-  duration_ms: 0.069432
+  duration_ms: 0.070724
   type: 'test'
   ...
 # Subtest: park: GAME OVER — focus reaches zero while the day is ongoing
-ok 29 - park: GAME OVER — focus reaches zero while the day is ongoing
+ok 59 - park: GAME OVER — focus reaches zero while the day is ongoing
   ---
-  duration_ms: 0.052777
+  duration_ms: 0.060599
   type: 'test'
   ...
 # Subtest: park: objective completion is idempotent and ignores unrelated actions
-ok 30 - park: objective completion is idempotent and ignores unrelated actions
+ok 60 - park: objective completion is idempotent and ignores unrelated actions
   ---
-  duration_ms: 0.108429
+  duration_ms: 0.138854
+  type: 'test'
+  ...
+# Subtest: bank: randomized animal can be either a resident or a guest at load
+ok 61 - bank: randomized animal can be either a resident or a guest at load
+  ---
+  duration_ms: 0.069732
+  type: 'test'
+  ...
+# Subtest: bank: randomized guest animal enters and naturally leaves; resident never exits
+ok 62 - bank: randomized guest animal enters and naturally leaves; resident never exits
+  ---
+  duration_ms: 6.062725
+  type: 'test'
+  ...
+# Subtest: bank: HAPPY PATH — five successful actions immediately win
+ok 63 - bank: HAPPY PATH — five successful actions immediately win
+  ---
+  duration_ms: 0.166475
+  type: 'test'
+  ...
+# Subtest: bank: GAME OVER — day runs out with an unfinished mission
+ok 64 - bank: GAME OVER — day runs out with an unfinished mission
+  ---
+  duration_ms: 0.155989
+  type: 'test'
+  ...
+# Subtest: bank: GAME OVER — focus reaches zero while the day is ongoing
+ok 65 - bank: GAME OVER — focus reaches zero while the day is ongoing
+  ---
+  duration_ms: 0.085516
+  type: 'test'
+  ...
+# Subtest: bank: objective completion is idempotent and ignores unrelated actions
+ok 66 - bank: objective completion is idempotent and ignores unrelated actions
+  ---
+  duration_ms: 0.106928
+  type: 'test'
+  ...
+# Subtest: hotel: randomized animal can be either a resident or a guest at load
+ok 67 - hotel: randomized animal can be either a resident or a guest at load
+  ---
+  duration_ms: 0.098184
+  type: 'test'
+  ...
+# Subtest: hotel: randomized guest animal enters and naturally leaves; resident never exits
+ok 68 - hotel: randomized guest animal enters and naturally leaves; resident never exits
+  ---
+  duration_ms: 1.399748
+  type: 'test'
+  ...
+# Subtest: hotel: HAPPY PATH — five successful actions immediately win
+ok 69 - hotel: HAPPY PATH — five successful actions immediately win
+  ---
+  duration_ms: 0.147537
+  type: 'test'
+  ...
+# Subtest: hotel: GAME OVER — day runs out with an unfinished mission
+ok 70 - hotel: GAME OVER — day runs out with an unfinished mission
+  ---
+  duration_ms: 0.605731
+  type: 'test'
+  ...
+# Subtest: hotel: GAME OVER — focus reaches zero while the day is ongoing
+ok 71 - hotel: GAME OVER — focus reaches zero while the day is ongoing
+  ---
+  duration_ms: 0.095811
+  type: 'test'
+  ...
+# Subtest: hotel: objective completion is idempotent and ignores unrelated actions
+ok 72 - hotel: objective completion is idempotent and ignores unrelated actions
+  ---
+  duration_ms: 0.078415
   type: 'test'
   ...
 # Subtest: park cat and squirrel roll independently instead of sharing the same status
-ok 31 - park cat and squirrel roll independently instead of sharing the same status
+ok 73 - park cat and squirrel roll independently instead of sharing the same status
   ---
-  duration_ms: 0.133646
+  duration_ms: 0.21082
   type: 'test'
   ...
 # Subtest: map icon alias must not shadow the built-in Map constructor used by actor tracking
-ok 32 - map icon alias must not shadow the built-in Map constructor used by actor tracking
+ok 74 - map icon alias must not shadow the built-in Map constructor used by actor tracking
   ---
-  duration_ms: 1.120467
+  duration_ms: 0.812976
   type: 'test'
   ...
 # Subtest: park map structure matches mockup: six active zones plus outside, parking and entry
-ok 33 - park map structure matches mockup: six active zones plus outside, parking and entry
+ok 75 - park map structure matches mockup: six active zones plus outside, parking and entry
   ---
-  duration_ms: 0.229638
+  duration_ms: 0.155259
   type: 'test'
   ...
-1..33
-# tests 33
+1..75
+# tests 75
 # suites 0
-# pass 33
+# pass 75
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 93.144939
+# duration_ms 141.483775

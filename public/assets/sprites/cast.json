@@ -1,0 +1,410 @@
+[
+  {
+    "level": "house",
+    "id": "charles",
+    "name": "Charles",
+    "role": "homeowner",
+    "kind": "human",
+    "color": "#4dc4ff"
+  },
+  {
+    "level": "house",
+    "id": "elinor",
+    "name": "Elinor",
+    "role": "parent",
+    "kind": "human",
+    "color": "#f69ad0"
+  },
+  {
+    "level": "house",
+    "id": "june",
+    "name": "June",
+    "role": "child",
+    "kind": "human",
+    "color": "#ffc65c"
+  },
+  {
+    "level": "house",
+    "id": "sam",
+    "name": "Sam",
+    "role": "family member",
+    "kind": "human",
+    "color": "#8ef1a1"
+  },
+  {
+    "level": "house",
+    "id": "blue-lady",
+    "name": "The Blue Lady",
+    "role": "house spirit",
+    "kind": "ghost",
+    "color": "#8defff"
+  },
+  {
+    "level": "house",
+    "id": "music-box",
+    "name": "The Humming Child",
+    "role": "music-box spirit",
+    "kind": "ghost",
+    "color": "#a9c8ff"
+  },
+  {
+    "level": "house",
+    "id": "mittens",
+    "name": "Mittens",
+    "role": "cat",
+    "kind": "animal",
+    "color": "#ebc07e"
+  },
+  {
+    "level": "house",
+    "id": "delivery-driver",
+    "name": "Delivery Driver",
+    "role": "courier",
+    "kind": "human",
+    "color": "#ffcc79"
+  },
+  {
+    "level": "house",
+    "id": "neighbor",
+    "name": "Neighbor",
+    "role": "neighbor visiting",
+    "kind": "human",
+    "color": "#a8bdff"
+  },
+  {
+    "level": "house",
+    "id": "neighbor-dog",
+    "name": "Scout",
+    "role": "pet dog",
+    "kind": "animal",
+    "color": "#f2b982"
+  },
+  {
+    "level": "house",
+    "id": "hallway-wisp",
+    "name": "Passing Spirit",
+    "role": "wandering apparition",
+    "kind": "ghost",
+    "color": "#91f4fc"
+  },
+  {
+    "level": "park",
+    "id": "ranger",
+    "name": "Ranger",
+    "role": "park ranger",
+    "kind": "human",
+    "color": "#4dc4ff"
+  },
+  {
+    "level": "park",
+    "id": "coach",
+    "name": "Coach",
+    "role": "soccer coach",
+    "kind": "human",
+    "color": "#f69ad0"
+  },
+  {
+    "level": "park",
+    "id": "player",
+    "name": "Player",
+    "role": "soccer player",
+    "kind": "human",
+    "color": "#ffc65c"
+  },
+  {
+    "level": "park",
+    "id": "photo-mom",
+    "name": "Maya",
+    "role": "photographer / parent",
+    "kind": "human",
+    "color": "#8ef1a1"
+  },
+  {
+    "level": "park",
+    "id": "park-dog",
+    "name": "Patches",
+    "role": "park dog",
+    "kind": "animal",
+    "color": "#e2aa79"
+  },
+  {
+    "level": "park",
+    "id": "tree-line",
+    "name": "The Tree-Line Watcher",
+    "role": "tree spirit",
+    "kind": "ghost",
+    "color": "#8defff"
+  },
+  {
+    "level": "park",
+    "id": "midfield-echo",
+    "name": "The Midfield Echo",
+    "role": "field spirit",
+    "kind": "ghost",
+    "color": "#a9c8ff"
+  },
+  {
+    "level": "park",
+    "id": "park-cat",
+    "name": "Whiskers",
+    "role": "cat",
+    "kind": "animal",
+    "color": "#edbf80"
+  },
+  {
+    "level": "park",
+    "id": "park-squirrel",
+    "name": "Acorn",
+    "role": "squirrel",
+    "kind": "animal",
+    "color": "#c99b5b"
+  },
+  {
+    "level": "park",
+    "id": "quick-photog",
+    "name": "Alex",
+    "role": "photographer",
+    "kind": "human",
+    "color": "#75e3ef"
+  },
+  {
+    "level": "park",
+    "id": "visiting-mom",
+    "name": "Dana",
+    "role": "parent",
+    "kind": "human",
+    "color": "#fb8fb4"
+  },
+  {
+    "level": "park",
+    "id": "child-ivy",
+    "name": "Ivy",
+    "role": "child",
+    "kind": "human",
+    "color": "#fdcb76"
+  },
+  {
+    "level": "park",
+    "id": "child-noah",
+    "name": "Noah",
+    "role": "child",
+    "kind": "human",
+    "color": "#87afff"
+  },
+  {
+    "level": "park",
+    "id": "family-dog",
+    "name": "Buddy",
+    "role": "pet dog",
+    "kind": "animal",
+    "color": "#f7ad79"
+  },
+  {
+    "level": "park",
+    "id": "transient-spirit",
+    "name": "Passing Specter",
+    "role": "wandering ghost",
+    "kind": "ghost",
+    "color": "#b5a1ff"
+  },
+  {
+    "level": "bank",
+    "id": "teller-ava",
+    "name": "Ava",
+    "role": "bank employee / teller",
+    "kind": "human",
+    "color": "#81dcff"
+  },
+  {
+    "level": "bank",
+    "id": "banker",
+    "name": "Martin",
+    "role": "bank employee / manager",
+    "kind": "human",
+    "color": "#ffce86"
+  },
+  {
+    "level": "bank",
+    "id": "guard-alex",
+    "name": "Alex",
+    "role": "security guard",
+    "kind": "human",
+    "color": "#8cdaff"
+  },
+  {
+    "level": "bank",
+    "id": "guard-renee",
+    "name": "Renee",
+    "role": "security guard",
+    "kind": "human",
+    "color": "#a0f1cc"
+  },
+  {
+    "level": "bank",
+    "id": "care-clerk",
+    "name": "June",
+    "role": "bank employee / lost property clerk",
+    "kind": "human",
+    "color": "#f9a7ce"
+  },
+  {
+    "level": "bank",
+    "id": "vault-spirit",
+    "name": "The Night Auditor",
+    "role": "vault ghost",
+    "kind": "ghost",
+    "color": "#c3afff"
+  },
+  {
+    "level": "bank",
+    "id": "express-teller",
+    "name": "Harper",
+    "role": "bank employee / express teller",
+    "kind": "human",
+    "color": "#a6ffcb"
+  },
+  {
+    "level": "bank",
+    "id": "archivist",
+    "name": "Remy",
+    "role": "bank employee / records archivist",
+    "kind": "human",
+    "color": "#b5b6f8"
+  },
+  {
+    "level": "bank",
+    "id": "customer-nina",
+    "name": "Nina",
+    "role": "customer",
+    "kind": "human",
+    "color": "#ff9fa4"
+  },
+  {
+    "level": "bank",
+    "id": "bank-thief",
+    "name": "Suspicious Visitor",
+    "role": "thief",
+    "kind": "human",
+    "color": "#c7b0ff"
+  },
+  {
+    "level": "bank",
+    "id": "customer-omar",
+    "name": "Omar",
+    "role": "customer",
+    "kind": "human",
+    "color": "#8be6b0"
+  },
+  {
+    "level": "bank",
+    "id": "customer-ivy",
+    "name": "Ivy",
+    "role": "customer",
+    "kind": "human",
+    "color": "#eec184"
+  },
+  {
+    "level": "bank",
+    "id": "lost-accountant",
+    "name": "Lost Accountant",
+    "role": "visiting ghost",
+    "kind": "ghost",
+    "color": "#9cddff"
+  },
+  {
+    "level": "bank",
+    "id": "customer-consult",
+    "name": "Taylor",
+    "role": "customer",
+    "kind": "human",
+    "color": "#e3adf9"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-manager",
+    "name": "Mara",
+    "role": "hotel manager",
+    "kind": "human",
+    "color": "#70c9ff"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-concierge",
+    "name": "Arlo",
+    "role": "concierge",
+    "kind": "human",
+    "color": "#efbd85"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-housekeeper",
+    "name": "Nia",
+    "role": "housekeeper",
+    "kind": "human",
+    "color": "#b5eaa0"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-guard",
+    "name": "Ezra",
+    "role": "security guard",
+    "kind": "human",
+    "color": "#9da7ff"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-lifeguard",
+    "name": "Sofia",
+    "role": "pool attendant",
+    "kind": "human",
+    "color": "#71d7de"
+  },
+  {
+    "level": "hotel",
+    "id": "suite-spirit",
+    "name": "The Pearl Duchess",
+    "role": "presidential suite ghost",
+    "kind": "ghost",
+    "color": "#b8f8ff"
+  },
+  {
+    "level": "hotel",
+    "id": "ballroom-spirit",
+    "name": "The Last Dancer",
+    "role": "ballroom ghost",
+    "kind": "ghost",
+    "color": "#cab5ff"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-guest-a",
+    "name": "Ruth",
+    "role": "hotel guest",
+    "kind": "human",
+    "color": "#ff9fc6"
+  },
+  {
+    "level": "hotel",
+    "id": "hotel-guest-b",
+    "name": "Luis",
+    "role": "hotel guest",
+    "kind": "human",
+    "color": "#ffcc8c"
+  },
+  {
+    "level": "hotel",
+    "id": "spa-visitor",
+    "name": "Iris",
+    "role": "spa guest",
+    "kind": "human",
+    "color": "#ec9bfa"
+  },
+  {
+    "level": "hotel",
+    "id": "ballroom-visitor",
+    "name": "Tariq",
+    "role": "ballroom guest",
+    "kind": "human",
+    "color": "#8ef1a7"
+  }
+]

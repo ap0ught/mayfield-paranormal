@@ -1,0 +1,10 @@
+
+> mayfield-paranormal-surveillance@1.2.0 validate:levels
+> node scripts/validate-levels.mjs
+
+✓ The Mayfield House — 3×3 map (9 cells, 9 zones), 4 cameras, 5 objectives
+✓ Mayfield Park — 3×3 map (9 cells, 6 zones), 4 cameras, 5 objectives
+✓ Mayfield Bank — 4×4 map (16 cells, 16 zones), 4 cameras, 5 objectives
+✓ The Grand Mayfield Hotel — 6×6 map (36 cells, 27 zones), 6 cameras, 5 objectives
+✓ Mayfield Farm — 3×3 map (9 cells, 9 zones), 4 cameras, 5 objectives
+All registered and example levels validated with artwork.
