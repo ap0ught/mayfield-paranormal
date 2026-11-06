@@ -287,7 +287,7 @@ export function parkZoneSpec(zoneId) {
   };
 }
 
-function actorModel(commands,actor,time) {
+function actorModel(commands,actor,time,ghostRevealed=false) {
   const moving=actor.activityState==='en_route'||actor.currentActivity==='travel';
   const stride=moving?Math.sin(time*11+actor.x*.14)*.28:0;
   const x=clamp((actor.x-50)*.105,-5.3,5.3);
@@ -297,8 +297,10 @@ function actorModel(commands,actor,time) {
   const color=actor.color||'#b3a3c7';
   if(actor.kind==='ghost') {
     const fly=.42+Math.sin(time*2.2+hash)*.18;
-    commands.ball(x,1.5+fly,z,.82,1.5,.7,'#78defb',.48);
-    commands.ball(x,2.28+fly,z,.58,.6,.58,'#a8f7ff',.56);
+    const alpha=ghostRevealed?.9:.28;
+    const glow=ghostRevealed?'#d69bff':'#78defb';
+    commands.ball(x,1.5+fly,z,.82,1.5,.7,glow,alpha);
+    commands.ball(x,2.28+fly,z,.58,.6,.58,ghostRevealed?'#f0d5ff':'#a8f7ff',alpha+.04);
     commands.ball(x-.15,2.38+fly,z+.31,.08,.1,.08,'#102b50');
     commands.ball(x+.15,2.38+fly,z+.31,.08,.1,.08,'#102b50');
   } else if(actor.kind==='animal') {
@@ -381,7 +383,7 @@ export class Park3DRenderer {
     this.zoneId=id;
     this.static=createParkZoneCommands(id);
   }
-  render({zoneId,actors=[],lightsOn=true,trapActive=false,time=0,width,height}) {
+  render({zoneId,actors=[],lightsOn=true,trapActive=false,ghostRevealed=false,time=0,width,height}) {
     if(!PARK_3D_ZONES.includes(zoneId))throw new Error(`Invalid Park room ${zoneId}`);
     this.setZone(zoneId);
     const gl=this.gl;
@@ -397,7 +399,7 @@ export class Park3DRenderer {
     const cam=PARK_FIXED_CAMERAS[zoneId];
     const vp=multiplyMatrices(perspectiveMatrix(cam.fov,pw/ph),viewMatrix(cam.eye,cam.lookAt));
     const roomCommands=new SceneCommands();
-    for(const a of actors)if(a.room===zoneId)actorModel(roomCommands,a,time);
+    for(const a of actors)if(a.room===zoneId)actorModel(roomCommands,a,time,ghostRevealed);
     if(trapActive)makeTrap(roomCommands);
     const all=[...this.static,...roomCommands.static,...roomCommands.transparent];
     gl.useProgram(this.program);

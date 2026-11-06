@@ -105,6 +105,9 @@ export default function App() {
   const [actors,setActors] = useState(initialWorld.actors);
   const [snapshotActors,setSnapshotActors] = useState(initialWorld.actors);
   const [snapshotFrame,setSnapshotFrame] = useState(0);
+  const [snapshotTime,setSnapshotTime] = useState(0);
+  const [animationTime,setAnimationTime] = useState(0);
+  const animationTimeRef = useRef(0);
   const actorsRef = useRef(actors);
   const simTickRef = useRef(0);
   const parkScheduleRef = useRef(null);
@@ -171,6 +174,9 @@ export default function App() {
     setActors(nextWorld.actors);
     setSnapshotActors(nextWorld.actors.map(actor=>({...actor})));
     setSnapshotFrame(0);
+    animationTimeRef.current=0;
+    setAnimationTime(0);
+    setSnapshotTime(0);
     actorsRef.current = nextWorld.actors;
     simTickRef.current = 0;
     setTrapCount(nextWorld.trapCount);
@@ -400,7 +406,20 @@ export default function App() {
 
   useEffect(()=>{
     if (!playing || levelFinished) return;
-    const id=setInterval(()=>{setSnapshotActors(actorsRef.current.map(a=>({...a})));setSnapshotFrame(f=>(f+1)%4);},1300/speed);
+    const id=setInterval(()=>{
+      animationTimeRef.current += 0.05 * speed;
+      setAnimationTime(animationTimeRef.current);
+    },50);
+    return ()=>clearInterval(id);
+  },[playing,speed,activeLevelId,levelFinished]);
+
+  useEffect(()=>{
+    if (!playing || levelFinished) return;
+    const id=setInterval(()=>{
+      setSnapshotActors(actorsRef.current.map(a=>({...a})));
+      setSnapshotFrame(f=>(f+1)%4);
+      setSnapshotTime(animationTimeRef.current);
+    },1300/speed);
     return ()=>clearInterval(id);
   },[playing,speed,activeLevelId,levelFinished]);
 
@@ -590,7 +609,7 @@ export default function App() {
         <section className="main-feed panel">
           <div className="feed-topline"><span className="time-box"><Clock3 size={16}/>{clockLabel(now)}</span><span className="room-box"><ColoredGlyph room={room} compact/>{room.id} — {room.name}<b>DETAIL 3 · LIVE</b></span><span className={`timer-box ${timeLeft<=15?'critical':''}`}><Clock3 size={20}/>{`00:${String(timeLeft).padStart(2,'0')}`}</span></div>
           <div className="main-image">
-            {level.id==='park' ? <ParkLive3D zoneId={selected} actors={actors} lightsOn={lights[selected]} trapActive={trapActive} playing={playing&&!levelFinished&&!feedClosed}/> : <RoomScene room={room} levelId={level.id} roomById={roomById} actors={actors} items={lostItems} lightsOn={lights[selected]} ghostRevealed={revealed} trapActive={trapActive} />}
+            {level.id==='park' ? <ParkLive3D zoneId={selected} actors={actors} lightsOn={lights[selected]} trapActive={trapActive} ghostRevealed={revealed} animationTime={animationTime} playing={playing&&!levelFinished&&!feedClosed}/> : <RoomScene room={room} levelId={level.id} roomById={roomById} actors={actors} items={lostItems} lightsOn={lights[selected]} ghostRevealed={revealed} trapActive={trapActive} />}
             <div className="main-room-tag"><ColoredGlyph room={room} compact/>{room.id} · {room.name}</div>
             {scanResult && <div className="scan-result"><Zap size={15}/>{scanResult}</div>}
             {recentRoomSwitch&&<div className="room-transition">🚶 {recentRoomSwitch}</div>}
@@ -617,7 +636,7 @@ export default function App() {
               const r=roomById[id];
               return <div key={`${index}-${id}`} className={`mini-camera ${selected===id?'camera-selected':''}`} style={iconColor(r)}>
                 <div className="mini-video" onClick={()=>changeRoom(id)} role="button" tabIndex={0} onKeyDown={e=>{if(e.key==='Enter')changeRoom(id)}}>
-                  {level.id==='park' ? <Park2DSnapshot zoneId={id} actors={snapshotActors} lightsOn={lights[id]} snapshotFrame={snapshotFrame}/> : <RoomScene room={r} levelId={level.id} roomById={roomById} actors={snapshotActors} snapshotFrame={snapshotFrame} items={lostItems} lightsOn={lights[id]} small />}
+                  {level.id==='park' ? <Park2DSnapshot zoneId={id} actors={snapshotActors} lightsOn={lights[id]} trapActive={trapActive&&id===selected} ghostRevealed={revealed} snapshotTime={snapshotTime} snapshotFrame={snapshotFrame}/> : <RoomScene room={r} levelId={level.id} roomById={roomById} actors={snapshotActors} snapshotFrame={snapshotFrame} items={lostItems} lightsOn={lights[id]} small />}
                   <div className="mini-header"><ColoredGlyph room={r} compact/><span>{r.id} — {r.name}</span></div>
                   <span className="snapshot-label">● {index+1} · SNAP</span>
                 </div>

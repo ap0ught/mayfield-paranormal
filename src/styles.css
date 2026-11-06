@@ -118,7 +118,7 @@ button{background:transparent;border:0}.app-shell{width:100%;max-width:2100px;mi
 .actor-pixels{display:block;width:100%;height:100%;background-size:600% 100%;background-repeat:no-repeat;image-rendering:pixelated;background-position:0% 0%;transform:scaleX(1)}
 .actor-sprite.actor-walking:not(.person-small) .actor-pixels{animation:mayfield-sprite-walk .64s steps(4,end) infinite}
 .actor-sprite.person-small .actor-pixels{animation:none}
-.simulation-paused .actor-pixels{animation-play-state:paused!important}
+.simulation-paused .actor-pixels{animation-play-state:paused!important}.simulation-paused .ghost-actor{animation-play-state:paused!important}
 /* Stop-motion feed: the 1.3-second React snapshot updates both position and pose. */
 @keyframes mayfield-sprite-walk{from{background-position-x:20%}to{background-position-x:100%}}
 .ghost-actor{width:10%;height:55%;object-fit:unset;opacity:.86;image-rendering:pixelated}

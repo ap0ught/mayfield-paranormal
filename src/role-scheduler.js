@@ -121,25 +121,30 @@ function stepScheduledWorld(world, level) {
       continue;
     }
     const block=scheduledBlock(plan,Math.min(second,level.dayDurationSeconds-1));
-    const nextBlock=plan.blocks.find(candidate=>candidate.start===block.end);
-    let target=block.zone;
-    let state='working';
+    const nextBlock=block
+      ? plan.blocks.find(candidate=>candidate.start===block.end)
+      : plan.blocks.find(candidate=>candidate.start>second);
+    let target=block?.zone ?? actor.room;
+    let state=block?'working':'idle';
+    let activity=block?.activity ?? 'idle';
     // Reserve just enough seconds for graph travel before the next appointment.
     if (nextBlock) {
       const steps=findRoomPath(level.roomById,actor.room,nextBlock.zone);
-      if (block.end-second <= steps.length-1) {
+      const travelWindow=block ? block.end-second : nextBlock.start-second;
+      if (travelWindow <= steps.length-1) {
         target=nextBlock.zone;
         state='en_route';
+        activity='travel';
       }
     }
     if (actor.room!==target) state='en_route';
     const path=findRoomPath(level.roomById,actor.room,target);
     const destination=path[1] ?? actor.room; // at most one zone per game second
-    const reached=destination===block.zone;
+    const reached=block ? destination===block.zone : destination===target;
     actors.push({
       ...actor,room:destination,targetZone:target,
-      currentActivity:reached?block.activity:'travel',
-      activityState:reached&&state==='working'?'working':'en_route',
+      currentActivity:reached?activity:'travel',
+      activityState:reached&&state==='working'?'working':state==='idle'?'idle':'en_route',
       x:destination===actor.room ? Math.max(12,Math.min(88,actor.x + actor.dir*0.5)) : 20,
     });
   }
@@ -180,7 +185,9 @@ export function compareScheduledPositions(level, world, second) {
     expectedKeys.add(key);
     if (!actual) {issues.push(`${formatParkTime(second)}: ${key} expected present but is absent`);continue;}
     const block=scheduledBlock(plan,Math.min(second,level.dayDurationSeconds-1));
-    // At every five-minute checkpoint the next appointment is either already
+    // A valid free interval has no appointment zone; presence and room validity
+    // are still checked below, but the scheduler must not invent one.
+    if (!block) continue;
     // reached (pre-travel), or no valid schedule was maintained.
     if (actual.room!==block.zone) issues.push(`${formatParkTime(second)}: ${key} expected ${block.zone} (${block.activity}), found ${actual.room}`);
   }
