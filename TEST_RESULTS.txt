@@ -1,0 +1,200 @@
+
+> mayfield-paranormal-surveillance@1.1.0 test
+> node --test tests/*.test.js
+
+TAP version 13
+# Subtest: house: every zone, actor route, camera, and guest schedule is valid
+ok 1 - house: every zone, actor route, camera, and guest schedule is valid
+  ---
+  duration_ms: 1.534646
+  type: 'test'
+  ...
+# Subtest: house: all map and scene illustrations exist
+ok 2 - house: all map and scene illustrations exist
+  ---
+  duration_ms: 0.885492
+  type: 'test'
+  ...
+# Subtest: house: initialization creates an independent resident population
+ok 3 - house: initialization creates an independent resident population
+  ---
+  duration_ms: 0.555136
+  type: 'test'
+  ...
+# Subtest: house: residents move through linked zones without leaving
+ok 4 - house: residents move through linked zones without leaving
+  ---
+  duration_ms: 0.22472
+  type: 'test'
+  ...
+# Subtest: house: scheduled guest arrives, crosses adjacent zones and exits
+ok 5 - house: scheduled guest arrives, crosses adjacent zones and exits
+  ---
+  duration_ms: 0.432275
+  type: 'test'
+  ...
+# Subtest: house: scheduled guests are human, animal and ghost actors
+ok 6 - house: scheduled guests are human, animal and ghost actors
+  ---
+  duration_ms: 0.293992
+  type: 'test'
+  ...
+# Subtest: park: every zone, actor route, camera, and guest schedule is valid
+ok 7 - park: every zone, actor route, camera, and guest schedule is valid
+  ---
+  duration_ms: 0.296196
+  type: 'test'
+  ...
+# Subtest: park: all map and scene illustrations exist
+ok 8 - park: all map and scene illustrations exist
+  ---
+  duration_ms: 0.126065
+  type: 'test'
+  ...
+# Subtest: park: initialization creates an independent resident population
+ok 9 - park: initialization creates an independent resident population
+  ---
+  duration_ms: 0.307872
+  type: 'test'
+  ...
+# Subtest: park: residents move through linked zones without leaving
+ok 10 - park: residents move through linked zones without leaving
+  ---
+  duration_ms: 0.337736
+  type: 'test'
+  ...
+# Subtest: park: scheduled guest arrives, crosses adjacent zones and exits
+ok 11 - park: scheduled guest arrives, crosses adjacent zones and exits
+  ---
+  duration_ms: 0.153806
+  type: 'test'
+  ...
+# Subtest: park: scheduled guests are human, animal and ghost actors
+ok 12 - park: scheduled guests are human, animal and ghost actors
+  ---
+  duration_ms: 0.165834
+  type: 'test'
+  ...
+# Subtest: DRY-test park has six simulated zones in a 3×3 map including three outside cells
+ok 13 - DRY-test park has six simulated zones in a 3×3 map including three outside cells
+  ---
+  duration_ms: 0.138553
+  type: 'test'
+  ...
+# Subtest: park has two photographers with the same role and different stay
+ok 14 - park has two photographers with the same role and different stay
+  ---
+  duration_ms: 0.160035
+  type: 'test'
+  ...
+# Subtest: visiting family enters as a group and departs while park residents remain
+ok 15 - visiting family enters as a group and departs while park residents remain
+  ---
+  duration_ms: 1.64702
+  type: 'test'
+  ...
+# Subtest: focus drains one at a time and restores with colored category caps
+ok 16 - focus drains one at a time and restores with colored category caps
+  ---
+  duration_ms: 0.256166
+  type: 'test'
+  ...
+# Subtest: muted zones disappear from sound log and activity filters still work
+ok 17 - muted zones disappear from sound log and activity filters still work
+  ---
+  duration_ms: 0.133597
+  type: 'test'
+  ...
+# Subtest: validation catches illegal guest route skips
+ok 18 - validation catches illegal guest route skips
+  ---
+  duration_ms: 0.145474
+  type: 'test'
+  ...
+# Subtest: house: randomized animal can be either a resident or a guest at load
+ok 19 - house: randomized animal can be either a resident or a guest at load
+  ---
+  duration_ms: 0.263347
+  type: 'test'
+  ...
+# Subtest: house: randomized guest animal enters and naturally leaves; resident never exits
+ok 20 - house: randomized guest animal enters and naturally leaves; resident never exits
+  ---
+  duration_ms: 1.710554
+  type: 'test'
+  ...
+# Subtest: house: HAPPY PATH — five successful actions immediately win
+ok 21 - house: HAPPY PATH — five successful actions immediately win
+  ---
+  duration_ms: 0.441379
+  type: 'test'
+  ...
+# Subtest: house: GAME OVER — day runs out with an unfinished mission
+ok 22 - house: GAME OVER — day runs out with an unfinished mission
+  ---
+  duration_ms: 0.267583
+  type: 'test'
+  ...
+# Subtest: house: GAME OVER — focus reaches zero while the day is ongoing
+ok 23 - house: GAME OVER — focus reaches zero while the day is ongoing
+  ---
+  duration_ms: 0.126906
+  type: 'test'
+  ...
+# Subtest: house: objective completion is idempotent and ignores unrelated actions
+ok 24 - house: objective completion is idempotent and ignores unrelated actions
+  ---
+  duration_ms: 0.12921
+  type: 'test'
+  ...
+# Subtest: park: randomized animal can be either a resident or a guest at load
+ok 25 - park: randomized animal can be either a resident or a guest at load
+  ---
+  duration_ms: 0.1023
+  type: 'test'
+  ...
+# Subtest: park: randomized guest animal enters and naturally leaves; resident never exits
+ok 26 - park: randomized guest animal enters and naturally leaves; resident never exits
+  ---
+  duration_ms: 1.466194
+  type: 'test'
+  ...
+# Subtest: park: HAPPY PATH — five successful actions immediately win
+ok 27 - park: HAPPY PATH — five successful actions immediately win
+  ---
+  duration_ms: 0.105605
+  type: 'test'
+  ...
+# Subtest: park: GAME OVER — day runs out with an unfinished mission
+ok 28 - park: GAME OVER — day runs out with an unfinished mission
+  ---
+  duration_ms: 0.070624
+  type: 'test'
+  ...
+# Subtest: park: GAME OVER — focus reaches zero while the day is ongoing
+ok 29 - park: GAME OVER — focus reaches zero while the day is ongoing
+  ---
+  duration_ms: 0.059518
+  type: 'test'
+  ...
+# Subtest: park: objective completion is idempotent and ignores unrelated actions
+ok 30 - park: objective completion is idempotent and ignores unrelated actions
+  ---
+  duration_ms: 0.13635
+  type: 'test'
+  ...
+# Subtest: park cat and squirrel roll independently instead of sharing the same status
+ok 31 - park cat and squirrel roll independently instead of sharing the same status
+  ---
+  duration_ms: 0.138193
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 84.990542
